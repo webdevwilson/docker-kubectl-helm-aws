@@ -13,3 +13,10 @@ RUN apk add -U --no-cache python3 ca-certificates \
     && pip3 --no-cache-dir install awscli==${AWSCLI_VERSION}
 COPY --from=0 /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=1 /usr/local/bin/kubectl /usr/local/bin/kubectl
+
+# Install aws-iam-authenticator
+RUN apk add curl
+RUN curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
+RUN chmod +x ./aws-iam-authenticator
+RUN mv ./aws-iam-authenticator /usr/bin/
+RUN apk del curl
